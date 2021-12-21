@@ -101,6 +101,27 @@ curl -i -X GET --url http://localhost:8001/services
 
 14. Test the Management GUI via the browser: `http://<public_ip>:8002/overview`
 
+15. Via the CLI, apply your Enterprise license:
+
+```bash
+curl -i -X POST http://<hostname>:8001/licenses \
+  -d payload='{"license":{"payload":{"admin_seats":"1","customer":"Example Company, Inc","dataplanes":"1","license_creation_date":"2017-07-20","license_expiration_date":"2017-07-20","license_key":"00141000017ODj3AAG_a1V41000004wT0OEAU","product_subscription":"Konnect Enterprise","support_plan":"None"},"signature":"6985968131533a967fcc721244a979948b1066967f1e9cd65dbd8eeabe060fc32d894a2945f5e4a03c1cd2198c74e058ac63d28b045c2f1fcec95877bd790e1b","version":"1"}}'
+```
+
+16. Enable the DevPortal by updating `portal_gui_host` in `/etc/kong/kong.conf`:
+
+```bash
+portal = on
+portal_gui_listen = 0.0.0.0:8003, 0.0.0.0:8446 ssl
+portal_gui_host = 54.191.237.30:8003
+```
+
+17. Restart kong:
+
+```bash
+sudo /usr/local/bin/kong restart -c /etc/kong/kong.conf
+```
+
 The following links were useful during this installation:
 
 - [Install postgres on Amazon Linux](https://techviewleo.com/install-postgresql-12-on-amazon-linux/)
